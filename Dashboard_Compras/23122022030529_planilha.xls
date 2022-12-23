@@ -1,0 +1,1920 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../estilo/azul/tabela_imp.css" />
+<script type="text/javascript" language="javascript" src="../js/jquery.js"></script>
+<script type='text/javascript'>
+//BLOQUEAR A TECLA F5
+if (navigator.appName.indexOf('Internet Explorer')<0) {
+	window.onkeydown=function(event){
+		if (event.keyCode==116) {
+			event.preventDefault();
+			alert("Tecla F5 Bloqueada...");
+		}
+	}
+}
+else {
+// IE
+document.onkeydown=function(event) {
+	if (window.event.keyCode==116) {
+		alert("Tecla F5 Bloqueada...");
+		window.event.keyCode=0; window.event.returnValue=false;
+	}
+}
+}
+</script>
+<script type='text/javascript'>
+//funcao que bloqueia tecla CTRL+J
+var pressedCtrl = false;
+$(document).keyup(function (e) {
+	if(e.which == 17)
+	pressedCtrl=false;
+})
+
+$(document).keydown(function (e) {
+	if(e.which == 17)
+	pressedCtrl = true;
+
+        //CTRL + J (teclado) Bloqueado, erro com leitor de codigo de barras
+	if(pressedCtrl == true && e.which == 74) {
+            return false;
+        }
+});
+</script>
+<script type="text/javascript" language="javascript" >
+    //funcao de trocar a cor da TR no listar
+$(function(){
+$('table#lista tbody tr').hover(
+    function(){
+        $(this).addClass('destaque');
+    },
+    function(){
+        $(this).removeClass('destaque');
+    }
+    );
+});
+</script>
+
+
+<script type="text/javascript" language="javascript">
+    //funcao para formar moeda
+function fazerValor(valor,IdCampo) {
+
+//limpando os pontos se houver no campo
+var valor = valor.replace(".","");
+
+//funcao para colocar "." na milhar
+String.prototype.formatMoney = function(){
+    //var v = this.replace(/(\d{1,3})$/g,"$1,00");
+    var v = this.replace(/(\d{1,3})(\d{3})$/,"$1.$2");
+    return v;
+};
+
+//Encontra a posição da primeira ocorrência de uma string
+function strpos (haystack, needle, offset) {
+  var i = (haystack + '').indexOf(needle, (offset || 0));
+  return i === -1 ? false : i;
+}
+
+var mystring = valor;
+var findme = ",";
+
+var pos = strpos(mystring, findme);
+
+//se não houver virgula, entra aqui.
+if(pos===false){
+    //se o campo estiver vazio, deixa ele vazio
+    if(valor==""){
+        //campo vazio fica vazio
+        document.getElementById(IdCampo).value = "";
+    }else{
+        //chamando a funcao de milhar
+        valor =  valor.formatMoney();
+        document.getElementById(IdCampo).value = valor+",00";
+    }
+
+}else{
+        //pegando o valor antes da virgula
+        var nvalor = valor.substring(0,pos);
+        //pegando o valor depois da virgula
+        dv = valor.substring(pos);
+
+        //pegando o valor depois da virgula sem ela
+        deci = valor.substring(pos+1);
+        if(deci.length==1) {
+            dv = dv+"0";
+        }
+        if(deci.length==0) {
+            dv = dv+"00";
+        }
+
+        //chamando a funcao de milhar
+        nvalor =  nvalor.formatMoney();
+        document.getElementById(IdCampo).value = nvalor+dv;
+}
+
+}
+</script>
+
+
+
+
+<script type='text/javascript' language="javascript">
+    //funcao de permitir apenas os caractrs informado. 1 a 9 e virgula
+$(function(){
+    $(".money").bind("keyup focus", function(e) {
+        e.preventDefault();
+        var expre = /[^0-9,-]/g;
+        // REMOVE OS CARACTERES DA EXPRESSAO ACIMA
+        if ($(this).val().match(expre))
+            $(this).val($(this).val().replace(expre,''));
+    });
+ });
+
+//funcao para colocar o sinal de - na frente dos valores
+ $(function(){
+    $(".money").bind("keyup focus", function() {
+
+        //Encontra a posição da primeira ocorrência de uma string
+        function strpos (haystack, needle, offset) {
+          var i = (haystack + '').indexOf(needle, (offset || 0));
+          return i === -1 ? false : i;
+        }
+
+        var mystring = $(this).val();
+        var findme = "-";
+
+        var pos = strpos(mystring, findme);
+
+        //se não existir o -, não faz nada
+        if(pos===false){
+            //não faz nada
+        }else{
+            //se exisitir entra aqui
+
+            //se ele for a primeira posicao não faz nada
+            if(pos===0){
+            //se ele for a primeira posicao não faz nada
+            }else{
+            //se ele existir e for o ultimo, remove e coloca na frente
+            mystring = mystring.substring(0,(mystring.length - 1));
+            mystring = "-"+mystring;
+            $(this).val(mystring);
+            }
+
+        }
+            //$(this).val(mystring);
+    });
+ });
+</script>
+
+<script type="text/javascript" language="javascript" src="../js/script.js"></script>
+<script type="text/javascript" language="javascript" src="../js/meiomask/meiomask.js"></script>
+<script type="text/javascript" language="javascript" src="../js/meiomask/mascaras.js"></script>
+</head>
+<body>
+    <table width="90%" align="center">
+    <tr>
+        <td width="60%" class="razao">
+            <b>
+                <font face="verdana" size="3">
+                    NE PET                </font>
+            </b>
+            <br>
+        </td>
+    </tr>
+</table><table width="100%">
+<tr>
+	<td>
+		<font face="verdana" size="2"><i>Relatório de Compras</i></font>
+	</td>
+</tr>
+<tr>
+	<td><font face="verdana" size="2">
+		Período: 17/12/2022 à 23/12/2022 - Finalizado	</font>	
+	</td>
+</tr>
+</table>
+<table width="100%" class="tabela">
+<tfoot>
+	<tr class="cinza"><td colspan="20">Relatório de Compras</td></tr>
+</tfoot>
+		<tr class="azul-claro">
+		<td>Nº: <b>838</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b></b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    RETIFICA KGB LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: Depósito</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0847 : RETIFICAR DA EMPILHADEIRA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>2.430,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    2.430,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>2.430,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>839</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b></b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    JOSE EDSON DE SANTANA LEITE                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: boleto - 02</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0021 : PRE-FORMA MOIDA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>7,00000</td>
+                <td>18,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>905,50000</td>
+		<td>
+                    6.338,50000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>6.338,50000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>840</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b></b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    ECOPLAST ECOLOGIA PLASTICOS LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: Depósito</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0755 : PEAD MOIDO BRANCO RECICLADO</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>4,15000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>930,00000</td>
+		<td>
+                    3.859,50000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>3.859,50000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>841</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b></b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    BRUNO FELIPE DA SILVA CAVALCANTE                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: boleto - 0 - 20</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0848 : PEÇA DO MOTOR DA EMPILHADEIRA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>6.165,00000</td>
+                <td>18,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    6.165,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>6.165,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>843</b></td>
+                <td>Data: <b>17/12/2022</b></td>
+                <td>Fatura: <b>1952</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    ECOPLAST ECOLOGIA PLASTICOS LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: BOLETO - 13 DIAS</td>
+                <td>Conclusão: 17/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0755 : PEAD MOIDO BRANCO RECICLADO</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>4,15000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>930,00000</td>
+		<td>
+                    3.859,50000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>3.859,50000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>845</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b>141242</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    DP COMERCIO DE AGUA LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: boleto - 02</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0632 : ENVASE IAIA 19,5LT</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>3,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>50,00000</td>
+		<td>
+                    150,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>150,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>848</b></td>
+                <td>Data: <b>17/12/2022</b></td>
+                <td>Fatura: <b>18716</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    ELETROPALMA COMERCIO MATERIAL ELETRICO LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: boleto - 28-42-56</td>
+                <td>Conclusão: 17/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0854 : WEGCONTACTOR TRIP CWM18 18A</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>630,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    1.260,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0769 : WEGELEMENTO CONTATO NA BCXMF10</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>89,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    178,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>1.438,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>849</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b>25403</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    KADISA INDUSTRIA E COMERCIO LTDA - ME (MATRIZ PE)                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: boleto - 30 DIAS</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0156 : RT TUB INOX A38 U3 2770 20MM 3KW220V T.R CNIPLE</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>240,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>10,00000</td>
+		<td>
+                    2.400,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>2.400,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>851</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b>2717</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    3RIOS INDUSTRIA E COMERCIO DE PLASTICO L                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: boleto - 0 - 15</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0664 : RESINA PET CLEARTUF 8006 HP</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>9,95000</td>
+                <td>18,00000</td>
+                <td>3,25000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>25.440,00000</td>
+		<td>
+                    261.354,66000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>261.354,66000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>852</b></td>
+                <td>Data: <b>20/12/2022</b></td>
+                <td>Fatura: <b>2765</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    ANTONIO DA SILVA LOPES NETO COMERCIO E SERVICOS                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: BOLETO - 13 DIAS</td>
+                <td>Conclusão: 20/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0191 : RETIFICAÇÃO E AFIAÇÃO DIVERSOS</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>60,00000</td>
+                <td>18,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>5,00000</td>
+		<td>
+                    300,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>300,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>853</b></td>
+                <td>Data: <b>20/12/2022</b></td>
+                <td>Fatura: <b>68793</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    SO VEDACOES LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: Boleto - 28 Dias</td>
+                <td>Conclusão: 20/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0857 : ORING 148,82 X 03,53 PK.2257 CEN2257</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>9,30000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>4,00000</td>
+		<td>
+                    37,20000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0858 : GAXETA 032,00 X 040,00 X 03,30 NAP310 NokCfw</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>28,35900</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>6,00000</td>
+		<td>
+                    170,15400                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0859 : ORING 088,62 X 01,78 PK.2043 CEN2043</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>2,55000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    2,55000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>209,90400</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>854</b></td>
+                <td>Data: <b>20/12/2022</b></td>
+                <td>Fatura: <b>2770</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    ANTONIO DA SILVA LOPES NETO COMERCIO E SERVICOS                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: BOLETO - 14 DIAS</td>
+                <td>Conclusão: 20/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0191 : RETIFICAÇÃO E AFIAÇÃO DIVERSOS</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>60,00000</td>
+                <td>18,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>5,00000</td>
+		<td>
+                    300,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>300,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>855</b></td>
+                <td>Data: <b>20/12/2022</b></td>
+                <td>Fatura: <b>9576</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    AMBIPAR ENVIRONMENTAL NORDESTE LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 20/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0237 : SUCATA DE PET RETORNAVEL</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>3,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1.280,00000</td>
+		<td>
+                    4.480,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>4.480,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>856</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b>9564</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    AMBIPAR ENVIRONMENTAL NORDESTE LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0237 : SUCATA DE PET RETORNAVEL</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>2,20000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>4.620,00000</td>
+		<td>
+                    10.164,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>10.164,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>857</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b>9555</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    AMBIPAR ENVIRONMENTAL NORDESTE LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0449 : PLASTICO VARREDURA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>1,20000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>3.110,00000</td>
+		<td>
+                    3.732,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0021 : PRE-FORMA MOIDA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>0,90000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>880,00000</td>
+		<td>
+                    792,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>4.524,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>861</b></td>
+                <td>Data: <b>20/12/2022</b></td>
+                <td>Fatura: <b>150208</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    METANACO - METAIS E ACOS LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 20/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0860 : ACO VC150 RED.LAM. 69,85MM. X 76 MM</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>95,00000</td>
+                <td>18,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>5,00000</td>
+		<td>
+                    475,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>475,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>864</b></td>
+                <td>Data: <b>19/12/2022</b></td>
+                <td>Fatura: <b>5110</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    PORTUGAL MATERIAL DE ESCRITORIO INFORMATICA E LIMPEZA EIRELI                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: boleto - 28-42-56</td>
+                <td>Conclusão: 19/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0861 : CLIPS GALV.30 420 UND ECOCLIPS</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>13,95000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    13,95000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0862 : CLIPS GALV.80 180 UND ECOCLIPS</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>13,95000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    13,95000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0180 : CLORO C/5 LT A 2% VALENCA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>10,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>12,00000</td>
+		<td>
+                    120,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0314 : COPO DESC.180 ML C2500 PS IDEAL</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>139,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    279,00000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0181 : DESINFETANTE C/5 LT LAVANDA VALENCA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>8,95000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>12,00000</td>
+		<td>
+                    107,40000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0182 : DETERGENTE GELATINOSO PINHO GEL C/5LT</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>22,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>12,00000</td>
+		<td>
+                    270,00000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0269 : DETERGENTE NEUTRO C5 LT VALENCA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>12,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>12,00000</td>
+		<td>
+                    150,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0512 : ESPONJA LIMPEZA 100X71X20 LIMPABELA 3M</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>0,80000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>20,00000</td>
+		<td>
+                    16,00000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0402 : LIMPADOR MULTIUSO C500 ML VEJA TRAD.</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>5,85000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>5,00000</td>
+		<td>
+                    29,25000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0863 : MINA PGRAFITE 0.9 HB BRW</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>1,20000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    2,40000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0514 : PANO DE CHAO ALVEJADO 40X65 C FLANELADO CITATEXTIL</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>4,85000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>10,00000</td>
+		<td>
+                    48,50000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0430 : PAPEL HIGIENICO C64 RLS BRANCO COALA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>46,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>10,00000</td>
+		<td>
+                    465,00000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0404 : PAPEL HIGIENICO C8000 FLS SLIM AMERICA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>95,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    190,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0184 : PAPEL TOALHA 100% C/1000 FLS COMODORO</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>16,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>10,00000</td>
+		<td>
+                    160,00000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0185 : PAPEL TOALHA BRANCO C/750 FLS COMODORO</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>11,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>10,00000</td>
+		<td>
+                    115,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0864 : PASTA PLASTICA TRANSP 40 MM AZUL ALAPLAST</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>7,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    7,50000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0864 : PASTA PLASTICA TRANSP 40 MM AZUL ALAPLAST</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>6,90000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    13,80000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0864 : PASTA PLASTICA TRANSP 40 MM AZUL ALAPLAST</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>7,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    7,50000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0864 : PASTA PLASTICA TRANSP 40 MM AZUL ALAPLAST</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>7,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    7,50000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0865 : PASTA SUSPENSA MARM. CARTEX</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>3,80000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>10,00000</td>
+		<td>
+                    38,00000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0407 : PASTILHA SANITARIA 20 GR NEOD</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>2,20000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>20,00000</td>
+		<td>
+                    44,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0866 : PERFURADOR MEDIO 20 FLS TRIS</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>26,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    26,50000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0410 : SABAO TABLETE 5X200 GR AMARELO BTV</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>13,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    27,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0432 : SABONETE LIQ. 5 LT NET MAX</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>22,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>8,00000</td>
+		<td>
+                    176,00000                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0270 : SACO LIXO 200L 83X95X0,05 C100 UND MATSUPLAST</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>66,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    133,00000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0271 : SACO LIXO 40 LT C100 UND PRETO COML DOKAPACK</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>15,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    15,50000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>2.476,75000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>866</b></td>
+                <td>Data: <b>22/12/2022</b></td>
+                <td>Fatura: <b>1407</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    MANUTEC MANUTENÇAO EM BOMBAS E MOTORES EIRELI ME                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: Boleto - 30/45/60</td>
+                <td>Conclusão: 23/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0190 : SERVICOS DE MANUTENCAO</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>4.300,00000</td>
+                <td>18,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,00000</td>
+		<td>
+                    4.300,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>4.300,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>867</b></td>
+                <td>Data: <b>21/12/2022</b></td>
+                <td>Fatura: <b>715531</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    FRIGELAR COMERCIO E INDUSTRIA LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 21/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0699 : OLEO CAPELLA 68 EMBALAGEM 1L C1054</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>43,66000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>2,00000</td>
+		<td>
+                    87,32000                </td>
+	</tr>
+		<tr bgcolor=#F5F5F5>
+		<td>0696 : UNIAO CVALVULA TIPO SCHRADER 14SAE M X 14 SOLDA 100MM EOS EOSSU0410CM PSOLDA</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>4,44600</td>
+                <td>0,00000</td>
+                <td>3,25000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>5,00000</td>
+		<td>
+                    22,95248                </td>
+	</tr>
+		<tr bgcolor=#E8E8E8>
+		<td>0473 : ONU 1018 CLORODIFLUORMETANO CL. RS. 2.2 CIL 13,60KG EOS R22 R22 EOS</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>50,55000</td>
+                <td>18,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>13,60000</td>
+		<td>
+                    687,48000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>797,75248</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>868</b></td>
+                <td>Data: <b>21/12/2022</b></td>
+                <td>Fatura: <b>60573</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    EMPRESA DE TERMOPLASTICOS DO NORDESTE ETENO LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 21/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0064 : NPLFO720/21 AF-PEBDL</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>9,99391</td>
+                <td>18,00000</td>
+                <td>5,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>350,00000</td>
+		<td>
+                    3.672,76350                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>3.672,76350</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>869</b></td>
+                <td>Data: <b>21/12/2022</b></td>
+                <td>Fatura: <b>60574</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    EMPRESA DE TERMOPLASTICOS DO NORDESTE ETENO LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 21/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0060 : NPHA 7260-PEAD POLIETILENO.</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>11,40366</td>
+                <td>18,00000</td>
+                <td>3,25000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1.100,00000</td>
+		<td>
+                    12.951,71098                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>12.951,71098</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>872</b></td>
+                <td>Data: <b>21/12/2022</b></td>
+                <td>Fatura: <b>9579</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    AMBIPAR ENVIRONMENTAL NORDESTE LTDA                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 21/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0238 : BORRA DE PET</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>4,50000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>3.300,00000</td>
+		<td>
+                    14.850,00000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>14.850,00000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+		<tr class="azul-claro">
+		<td>Nº: <b>875</b></td>
+                <td>Data: <b>22/12/2022</b></td>
+                <td>Fatura: <b>296154</b></td>
+                <td colspan="4">Fornecedor: 
+                    <b>
+                    TIM S.A.                    </b>
+                </td>
+                <td colspan="2">Responsável: RICARDO PEDRO</td>
+                <td>Tipo Pagamento: ANTECIPAÇÃO 100%</td>
+                <td>Conclusão: 22/12/2022</td>
+                <td>Status: <font color = '#228B22' >
+			<b>Finalizado</b>
+		</font></td>
+	</tr>
+	</tr>
+        <tr>
+		<td>Produto</td>
+                <td>Lote</td>
+                <td>Validade</td>
+                <td>Fabricação</td>
+                <td>Valor</td>
+                <td>Icms</td>
+                <td>Ipi</td>
+                <td>Frete</td>
+                <td>Outros</td>
+                <td>Icms Subs</td>
+		<td>Quantidade</td>
+                <td>Total</td>
+	</tr>
+			<tr bgcolor=#E8E8E8>
+		<td>0871 : TIMCHIP PLANO POS TRIPLO 4G HLR 230</td>
+                <td></td>
+                <td>00/00/0000</td>
+                <td>00/00/0000</td>
+                <td>3,00000</td>
+                <td>18,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>0,00000</td>
+                <td>1,26000</td>
+                <td>1,00000</td>
+		<td>
+                    4,26000                </td>
+	</tr>
+	        <tr>
+                <td colspan="9"> &nbsp;</td>
+                <td>Desconto %: 0,00000</td>
+                <td>Desconto Real: 0,00000</td>
+                <td><b>4,26000</b></td>
+	</tr>
+        	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	
+	<tr>
+                <td align="right"><b>Valores Finais:</b> &nbsp;</td>
+                <td colspan="11" align="right">
+                    Em Lançamento : <b>0,00000</b>&nbsp;&nbsp;&nbsp;
+                    Finalizado : <b>347.501,30095</b>&nbsp;&nbsp;&nbsp;
+                    Cancelado : <b>0,00000</b>&nbsp;&nbsp;&nbsp;
+                    Total Geral : <b>347.501,30095</b>
+                </td>
+	</tr>
+</table>
+</body>
+</html>
