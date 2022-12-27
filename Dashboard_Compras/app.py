@@ -1,4 +1,3 @@
-from plotly.subplots import make_subplots
 import plotly.express as px
 import streamlit as st
 import pandas as pd
