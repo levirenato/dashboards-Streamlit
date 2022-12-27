@@ -7,7 +7,7 @@ base = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQwXe7ngD2zN
 df_meta = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQwXe7ngD2zNlEJdVw62Oejsb7UbeVlVHgClpceNjZKvpCji3gX8KszbQdgZUKHhCWi5IA2aihV8t_y/pub?gid=874097056&single=true&output=csv", sep=",")
 #Prpduto
 fig_produto = px.histogram(base,x = base["PRODUTO"], y=base["FATURAVEL"], text_auto=True)
-fig_produto.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+fig_produto.update_layout(font=dict(size=20),margin={"r":0,"t":0,"l":0,"b":0})
 # Cliente
 fig_cliente = px.histogram(base,x = base["CLIENTES"], y=[base["FATURAVEL"],base["VAZAMENTO"]], text_auto=True)
 fig_cliente.update_layout(margin={"r":0,"t":0,"l":0,"b":0},legend=dict(yanchor="top",y=0.99,xanchor="left",x=0.01),xaxis_range=["YPLASTIC", "LIMPIDA"])  
