@@ -36,6 +36,9 @@ with st.container():
         if filtro_setor == "Sopro":           
             gambiarra = "WEGCONTACTOR TRIP CWM18 18A"
             gambiarra_ = 1260
+        elif filtro_setor == "Injecao":
+            gambiarra = "RETIFICACAO E AFIACAO DIVERSOS"
+            gambiarra_ = 600
         else:
             gambiarra = top
             gambiarra_ = df_gp.loc[top]
