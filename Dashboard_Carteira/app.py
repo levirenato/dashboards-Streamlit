@@ -10,13 +10,13 @@ fig_produto = px.histogram(base,x = base["PRODUTO"], y=base["FATURAVEL"], text_a
 fig_produto.update_layout(font=dict(size=18),margin={"r":0,"t":0,"l":0,"b":0})
 # Cliente
 fig_cliente = px.histogram(base,x = base["CLIENTES"], y=[base["FATURAVEL"],base["VAZAMENTO"]], text_auto=True)
-fig_cliente.update_layout(font=dict(size=18),margin={"r":0,"t":0,"l":0,"b":0},legend=dict(yanchor="top",y=0.99,xanchor="left",x=0.01),xaxis_range=["YPLASTIC", "LIMPIDA"])  
+fig_cliente.update_layout(font=dict(size=18),barmode="group",margin={"r":0,"t":0,"l":0,"b":0},legend=dict(yanchor="top",y=0.99,xanchor="left",x=0.01),xaxis_range=["YPLASTIC", "LIMPIDA"])  
 # MEta
 df_injecao = df_meta.query("SETOR == 'INJECAO'")
 df_sopro = df_meta.query("SETOR == 'SOPRO'")
  # INJECAO
 fig_meta_injecao = px.bar(df_injecao, x="PRODUTO",y=[df_injecao["VALOR ( AC)"],df_injecao["META (R$)"]], text_auto=True)
-fig_meta_injecao.update_layout(font=dict(size=18))
+fig_meta_injecao.update_layout(font=dict(size=18),barmode="group")
  # SOPRO
 fig_meta_sopro = px.bar(df_sopro, x="PRODUTO",y=[df_sopro["VALOR ( AC)"],df_sopro["META (R$)"]], text_auto=True)
 fig_meta_sopro.update_layout(font=dict(size=18),legend=dict(yanchor="top",y=0.99,xanchor="left",x=0.01),barmode="group")  
