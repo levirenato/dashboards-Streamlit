@@ -31,7 +31,7 @@ with st.container():
         resultado = '{0:,}'.format(round(df_escolhido.Valor.sum(),2)).replace(',','.')
         st.metric(label="Total", value="{} R$".format(resultado))
     with col2:
-        top= df_escolhido.Produto.mode().to_string(index=False)
+        top= df_escolhido['Produto'].mode().to_string(index=False)
         df_gp = df.groupby("Produto")["Valor"].sum()
         if filtro_setor == "Sopro":           
             gambiarra = "WEGCONTACTOR TRIP CWM18 18A"
