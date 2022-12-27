@@ -1,6 +1,7 @@
-import plotly.express as px
 import streamlit as st
 import pandas as pd
+import numpy as np
+import plotly.express as px
 
 df = pd.read_csv("base.csv", sep=";",index_col="ID")
 df['Valor'] = df['Valor'].str.replace(",",".")
