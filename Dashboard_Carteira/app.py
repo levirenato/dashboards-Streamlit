@@ -19,7 +19,7 @@ fig_meta_injecao = px.bar(df_injecao, x="PRODUTO",y=[df_injecao["VALOR ( AC)"],d
 fig_meta_injecao.update_layout(font=dict(size=18))
  # SOPRO
 fig_meta_sopro = px.bar(df_sopro, x="PRODUTO",y=[df_sopro["VALOR ( AC)"],df_sopro["META (R$)"]], text_auto=True)
-fig_meta_sopro.update_layout(font=dict(size=18),legend=dict(yanchor="top",y=0.99,xanchor="left",x=0.01))  
+fig_meta_sopro.update_layout(font=dict(size=18),legend=dict(yanchor="top",y=0.99,xanchor="left",x=0.01),barmode="group")  
 
 #Layout
 with st.container():
