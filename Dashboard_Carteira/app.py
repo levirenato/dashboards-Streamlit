@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 # Grafico
-base = pd.read_csv("levirenato\dashboards-streamlit\original\Dashboard_Carteira\Base_db.csv", sep=";")
-df_meta = pd.read_csv("levirenato\dashboards-streamlit\original\Dashboard_Carteira\nova.csv", sep=";")
+base = pd.read_csv("Base_db.csv", sep=";")
+df_meta = pd.read_csv("nova.csv", sep=";")
 #Prpduto
 fig_produto = px.histogram(base,x = base["PRODUTO"], y=base["FATURAVEL"], text_auto=True)
 fig_produto.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
