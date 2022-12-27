@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
-df = pd.read_csv("base.csv", sep=";",index_col="ID")
+df = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTEy4XGF2hoA_slScOatkwd7KRO_wexG-2OvQ5u5MDYjywXsuNA02H0-LsBWeOJBbmAOpUW0IHDO7jA/pub?gid=0&single=true&output=csv", sep=",",index_col="ID")
 df['Valor'] = df['Valor'].str.replace(",",".")
 df['Valor'] = df['Valor'].astype(float)
 
