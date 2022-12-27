@@ -26,7 +26,7 @@ with st.sidebar:
 
 with st.container():
     #title
-    st.title("17/12/2022 à 23/12/2022")
+    st.title("Compras periodo 17/12/2022 à 23/12/2022")
     # Cards
     col1,col2,col3 = st.columns(3,gap="medium")
     with col1:
